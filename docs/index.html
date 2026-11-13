@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yt-link-parser: get the video ID from any YouTube link</title>
+<meta name="description" content="Free, dependency-free JavaScript parser for YouTube links. Get the video ID, Short or live type, start time and playlist from youtube.com and youtu.be links.">
+<link rel="canonical" href="https://dipak8080.github.io/yt-link-parser/">
+<style>
+:root{--bg:#0f1115;--card:#171a21;--line:#262b36;--text:#e8eaf0;--muted:#9aa3b2;--accent:#ff4d4d}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
+main{max-width:760px;margin:0 auto;padding:48px 20px 64px}
+h1{font-size:2rem;line-height:1.2;margin:0 0 8px}
+h2{font-size:1.25rem;margin:40px 0 12px}
+p{color:var(--muted);margin:0 0 16px}
+a{color:#7fb4ff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+input{width:100%;padding:14px 16px;border-radius:10px;border:1px solid var(--line);background:#0c0e12;color:var(--text);font-size:1rem}
+pre,code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+pre{background:#0c0e12;border:1px solid var(--line);border-radius:10px;padding:14px;overflow:auto;margin:12px 0 0;white-space:pre-wrap}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+td,th{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+.thumb{margin-top:12px;max-width:320px;width:100%;border-radius:10px;display:none}
+footer{margin-top:48px;color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+<main>
+<h1>yt-link-parser</h1>
+<p>Get the video ID, link type, start time and playlist from any YouTube link. Free, open source, no dependencies, works in the browser and in Node.</p>
+
+<div class="card">
+<label for="in"><strong>Paste a YouTube link</strong></label>
+<p style="margin:4px 0 10px">Try a Short, a youtu.be share link or a link with a timestamp.</p>
+<input id="in" value="https://youtu.be/jNQXAC9IVRw?si=demo&t=12" autocomplete="off" spellcheck="false">
+<pre id="out"></pre>
+<img id="thumb" class="thumb" alt="Video thumbnail" width="320" height="180">
+</div>
+
+<h2>Install</h2>
+<pre>npm install yt-link-parser</pre>
+<pre>import { parse } from "yt-link-parser";
+
+parse("https://www.youtube.com/shorts/tPEE9ZwTmy0");
+// { ok: true, id: "tPEE9ZwTmy0", kind: "short", start: null, ... }</pre>
+
+<h2>Links it understands</h2>
+<table>
+<tr><th>Link</th><th>Result</th></tr>
+<tr><td><code>youtube.com/watch?v=ID</code>, <code>m.</code>, <code>music.</code></td><td>video</td></tr>
+<tr><td><code>youtu.be/ID?si=...</code></td><td>video</td></tr>
+<tr><td><code>youtube.com/shorts/ID</code></td><td>short</td></tr>
+<tr><td><code>youtube.com/live/ID</code></td><td>live</td></tr>
+<tr><td><code>youtube.com/embed/ID</code></td><td>embed</td></tr>
+<tr><td><code>&amp;t=1m30s</code>, <code>#t=45</code></td><td>start time in seconds</td></tr>
+<tr><td><code>youtube.com/playlist?list=...</code></td><td>error: playlist</td></tr>
+<tr><td><code>youtube.com.evil.com/...</code></td><td>error: invalid</td></tr>
+</table>
+
+<h2>Where it's used</h2>
+<p>This parser checks every link pasted into <a href="https://yt-to-mp4.net/">YT to MP4, a free YouTube to MP4 converter</a>. It's how the box accepts youtube.com, youtu.be and Shorts links, even with extra text pasted around them. To save a video as an MP4 in up to 1080p, see the <a href="https://yt-to-mp4.net/youtube-to-mp4-1080p/">YouTube to MP4 1080p guide</a>.</p>
+
+<footer>
+<a href="https://github.com/dipak8080/yt-link-parser">Source on GitHub</a> · <a href="https://www.npmjs.com/package/yt-link-parser">npm</a> · MIT license
+</footer>
+</main>
+<script type="module">
+import { parse, thumbnails } from "./yt-link-parser.js";
+const input = document.getElementById("in"), out = document.getElementById("out"), img = document.getElementById("thumb");
+function run() {
+  const r = parse(input.value);
+  out.textContent = JSON.stringify(r, null, 2);
+  if (r.ok) { img.src = thumbnails(r.id).high; img.style.display = "block"; } else { img.style.display = "none"; }
+}
+input.addEventListener("input", run);
+run();
+</script>
+</body>
+</html>

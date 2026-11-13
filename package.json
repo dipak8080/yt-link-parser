@@ -1,0 +1,29 @@
+{
+  "name": "yt-link-parser",
+  "version": "1.0.0",
+  "description": "Tiny, dependency-free YouTube link parser. Gets the video ID, type (video, Short, live, embed), start time and playlist from any YouTube or youtu.be link.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node build.mjs && node test/test.mjs"
+  },
+  "keywords": ["youtube", "youtube-url", "youtube-id", "video-id", "parser", "url-parser", "youtu.be", "shorts", "youtube-shorts"],
+  "homepage": "https://yt-to-mp4.net/",
+  "repository": { "type": "git", "url": "git+https://github.com/dipak8080/yt-link-parser.git" },
+  "bugs": { "url": "https://github.com/dipak8080/yt-link-parser/issues" },
+  "author": "Dipak Shah",
+  "license": "MIT",
+  "engines": { "node": ">=16" }
+}
